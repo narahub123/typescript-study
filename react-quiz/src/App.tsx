@@ -48,9 +48,12 @@ const App = () => {
   return (
     <div className="App">
       <h1>REACT QUIZ</h1>
-      <button className="start" onClick={startQuiz}>
-        start
-      </button>
+      {/* display start button with condition */}
+      {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
+        <button className="start" onClick={startQuiz}>
+          start
+        </button>
+      ) : null}
       <p className="score">Score</p>
       <p>Loading Questions...</p>
       {/* <QuestionCard

@@ -1,60 +1,62 @@
-//// TYPESCRIPT AUTOMATICALLY ASSIGNS A TYPE WHEN YOU DEFINE A VARIABLE
+// what typescript does
+// define a strict type
+// use the same type throught coding
 let variable = "hello";
 
+// variable = 51; // error : Type 'number' is not assignable to type 'string'.ts(2322)
 variable = "hi";
 
 let age = 18;
 
-// age="eighteen"
+// age = "eighteen";
 
-//// EXPLICITLY PROVIDING A TYPE
 let ageWithType: number = 22;
 
-// ageWithType ="eighteen"
+// ageWithType = "eighteen";
 ageWithType = 18;
 
-//// BASIC TYPES
 let testString: string;
 
 testString = "hello";
 
 let testBoolean: boolean;
 
-testBoolean = false;
+testBoolean: false;
 
-//// MULTIPLE TYPES (UNION TYPES)
+// multiple types : Union type
 let testStringOrNumber: string | number;
 
 testStringOrNumber = 10;
 testStringOrNumber = "10";
-// testStringOrNumber = []
+// testStringOrNumber = [];
 
-//// ARRAYS
+// Array
 let names = ["john", "jane", "tom"];
 
-// names.push(3)
+// names.push(3); // Argument of type 'number' is not assignable to parameter of type 'string'.ts(2345)
 names.push("mike");
 
-let numbers = [11, 22, 35];
+let numbers = [11, 22, 34];
 
-// numbers.push(true)
-numbers.push(92);
+// numbers.push("mike");
+numbers.push(9);
 
 let testStringArray: string[];
 
-// testStringArray = [1,2,3]
+// testStringArray = [1, 2, 3]; // Type 'number' is not assignable to type 'string'.ts(2322)
 testStringArray = ["one", "two", "three"];
 
 let testNumberArray: number[];
 
-// testNumberArray = [true, "hi", 23]
-testNumberArray = [12, 55, 23];
+// testNumberArray = [false, "hi", 4]; // Type 'boolean' is not assignable to type 'number'.ts(2322)
+testNumberArray = [1, 3, 5];
 
 let testStringOrNumberArray: (string | number)[];
 
 testStringOrNumberArray = [1, "two", 3];
 
-//// OBJECTS
+// OBJECTS
+
 let user = {
   username: "john",
   age: 22,
@@ -62,12 +64,12 @@ let user = {
 };
 
 user.username = "jane";
-// user.age = "eighteen"
+// user.age = "eighteen";
 user.age = 29;
-// user.isAdmin = "no"
+// user.isAdmin = "no";
 user.isAdmin = true;
 
-// user.phone = "+12345678"
+// user.phone = "+1234567"; // Property 'phone' does not exist on type '{ username: string; age: number; isAdmin: boolean; }'.ts(2339)
 
 let userObj: {
   username: string;
@@ -75,13 +77,28 @@ let userObj: {
   isAdmin: boolean;
 };
 
+// need to write all the properties in the type
+// userObj = {
+//   username: "john",
+//   age: 23,
+// };
+// Property 'isAdmin' is missing in type '{ username: string; age: number; }' but required in type '{ username: string; age: number; isAdmin: boolean; }'.ts(2741)
 userObj = {
   username: "john",
   age: 23,
-  isAdmin: true,
-  // phone:"+1234567"
+  isAdmin: false,
 };
 
+// adding a new property which is not in the type, it causes error
+// userObj = {
+//   username: "john",
+//   age: 23,
+//   isAdmin: false,
+//   phone: "+12345",
+// };
+// Object literal may only specify known properties, and 'phone' does not exist in type '{ username: string; age: number; isAdmin: boolean; }'.ts(2353)
+
+// optional type
 let userObj2: {
   username: string;
   age: number;
@@ -91,169 +108,28 @@ let userObj2: {
 
 userObj2 = {
   username: "jane",
-  age: 43,
-  isAdmin: false,
-  phone: "+1234567",
+  age: 34,
+  isAdmin: true,
 };
 
-//// ANY TYPES ( BE CAREFUL )
-let testAny: any;
+userObj2 = {
+  username: "jane",
+  age: 34,
+  isAdmin: true,
+  phone: "+12345",
+};
+
+// ANY TYPE
+// Variable 'testAny' implicitly has an 'any' type,
+// but a better type may be inferred from usage.ts(7043)
+let testAny; // let testAny : any;
 
 testAny = 12;
-testAny = "Hello";
+testAny = "hi";
 testAny = true;
 testAny = [true];
 testAny = {};
 
 let testAnyArray: any[];
 
-testAnyArray = [1, "two", false, []];
-
-//// FUNCTIONS
-let sayHi = () => {
-  console.log("Hi, welcome");
-};
-
-// sayHi = "hi"
-
-let funcReturnString = (): string => {
-  console.log("hi");
-  return "lama dev";
-};
-
-let multiple = (num: number) => {
-  return num * 2;
-};
-let multiple2 = (num: number): number => {
-  return num * 2;
-};
-let multiple3 = (num: number): void => {
-  // return num * 2;
-  //Do sth but don't return
-};
-
-let sum = (num1: number, num2: number, another?: number) => {
-  return num1 + num2;
-};
-
-sum(2, 3);
-
-let func = (user: { username: string; age: number; phone?: string }) => {
-  console.log(user.username);
-};
-
-//// TYPE ALIASES
-type UserType = {
-  username: string;
-  age: number;
-  phone?: string;
-};
-
-let betterFunc = (user: UserType) => {
-  console.log(user.username);
-};
-
-//FUNCTION SIGNATURES
-type myFunc = (a: number, b: string) => void;
-
-let write: myFunc = (num, str) => {
-  console.log(num + " times " + str);
-};
-
-type UserType2 = {
-  username: string;
-  age: number;
-  phone?: string;
-  theme: "dark" | "light";
-};
-
-const userWithTheme: UserType2 = {
-  username: "john",
-  age: 43,
-  // theme:"pink"
-  theme: "dark",
-};
-
-//// INTERFACES
-// Be aware no equal sign
-interface IUser {
-  username: string;
-  email: string;
-  age: number;
-}
-
-interface IEmployee extends IUser {
-  employeeId: number;
-}
-
-const emp: IEmployee = {
-  username: "tom",
-  email: "tom@gmail.com",
-  age: 43,
-  employeeId: 1,
-};
-
-const client: IUser = {
-  username: "tom",
-  email: "tom@gmail.com",
-  age: 43,
-};
-
-//// GENERICS
-interface IAuthor {
-  id: number;
-  username: string;
-}
-
-interface ICategory {
-  id: number;
-  title: string;
-}
-
-interface IPost {
-  id: number;
-  title: string;
-  desc: string;
-  extra: IAuthor[] | ICategory[];
-}
-
-interface IPostBetter<T> {
-  id: number;
-  title: string;
-  desc: string;
-  extra: T[];
-}
-const testMe: IPostBetter<string> = {
-  id: 1,
-  title: "post title",
-  desc: "post desc",
-  extra: ["str", "str2"],
-};
-
-interface IPostEvenBetter<T extends object> {
-  id: number;
-  title: string;
-  desc: string;
-  extra: T[];
-}
-
-const testMe2: IPostEvenBetter<{ id:number }> = {
-  id: 1,
-  title: "post title",
-  desc: "post desc",
-  extra: [{ id: 1 }],
-};
-
-const testMe3: IPostEvenBetter<IAuthor> = {
-  id: 1,
-  title: "post title",
-  desc: "post desc",
-  extra: [{ id: 1, username: "john" }],
-};
-
-const testMe4: IPostEvenBetter<ICategory> = {
-  id: 1,
-  title: "post title",
-  desc: "post desc",
-  extra: [{ id: 1, title: "cat" }],
-};
+testAnyArray = [1, "two", false, [12], { key: "value" }];

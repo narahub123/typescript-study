@@ -1,7 +1,10 @@
 import { Button, Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { useShoppingCart } from "../context/ShoppingCartContext";
 
 export function Navbar() {
+  const { openCart, cartQuantity } = useShoppingCart();
+
   return (
     <NavbarBs className="bg-white shadow-sm mb-3" sticky="top">
       <Container>
@@ -16,33 +19,37 @@ export function Navbar() {
             About
           </Nav.Link>
         </Nav>
-        <Button
-          style={{
-            width: "3rem",
-            height: "3rem",
-            fontSize: "20px",
-            paddingTop: "10px",
-            position: "relative",
-          }}
-          variant="outline-primary"
-          className="rounded-circle"
-        >
-          <i className="fi fi-rr-shopping-cart"></i>
-          <div
-            className="rounded-circle bg-danger d-flex justify-content-center align-items-center"
+        {cartQuantity > 0 && (
+          <Button
+            onClick={openCart}
             style={{
-              color: "white",
-              width: "1.4rem",
-              height: "1.4rem",
-              position: "absolute",
-              bottom: 0,
-              right: 0,
-              transform: "translate(25%, 25%)",
+              width: "3rem",
+              height: "3rem",
+              fontSize: "20px",
+              paddingTop: "10px",
+              position: "relative",
             }}
+            variant="outline-primary"
+            className="rounded-circle"
           >
-            3
-          </div>
-        </Button>
+            <i className="fi fi-rr-shopping-cart"></i>
+
+            <div
+              className="rounded-circle bg-danger d-flex justify-content-center align-items-center"
+              style={{
+                color: "white",
+                width: "1.4rem",
+                height: "1.4rem",
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                transform: "translate(25%, 25%)",
+              }}
+            >
+              {cartQuantity}
+            </div>
+          </Button>
+        )}
       </Container>
     </NavbarBs>
   );
